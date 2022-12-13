@@ -27,7 +27,7 @@ class E131LightEffectBase {
   int get_lights_per_universe() const;
   int get_first_universe() const;
   int get_last_universe() const;
-  virtual int get_universe_count() const;
+  virtual int get_universe_count() const = 0;
 
   void set_first_universe(int universe) { this->first_universe_ = universe; }
   void set_channels(E131LightChannels channels) { this->channels_ = channels; }
