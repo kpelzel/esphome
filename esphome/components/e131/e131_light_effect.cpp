@@ -43,6 +43,7 @@ void E131LightEffect::apply() {
 }
 
 bool E131LightEffect::process_(int universe, const E131Packet &packet) {
+  ESP_LOGD(TAG, "BLAH");
   ESP_LOGV(TAG, "Applying data for '%s' on %d universe, for .", get_name().c_str(), universe);
 
   // check if this is our universe and data are valid

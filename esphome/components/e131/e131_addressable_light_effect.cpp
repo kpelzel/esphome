@@ -41,7 +41,8 @@ void E131AddressableLightEffect::apply(light::AddressableLight &it, const Color 
 }
 
 bool E131AddressableLightEffect::process_(int universe, const E131Packet &packet) {
-  ESP_LOGV(TAG, "addressable!", get_name().c_str());
+  ESP_LOGD(TAG, "BLAH");
+  ESP_LOGV(TAG, "addressable!");
 
   auto *it = get_addressable_();
 
