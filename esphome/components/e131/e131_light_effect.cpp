@@ -66,16 +66,20 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
 
   auto call = this->state_->turn_on();
 
+  float r = (float) input_data[0] / 255.0f;
+  float g = (float) input_data[1] / 255.0f;
+  float b = (float) input_data[2] / 255.0f;
+
   switch (channels_) {
     case E131_MONO:
       call.set_color_mode_if_supported(light::ColorMode::RGB_COLD_WARM_WHITE);
       call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
       call.set_color_mode_if_supported(light::ColorMode::RGB_WHITE);
       call.set_color_mode_if_supported(light::ColorMode::RGB);
-      call.set_red_if_supported(input_data[0]);
-      call.set_green_if_supported(input_data[0]);
-      call.set_blue_if_supported(input_data[0]);
-      call.set_brightness_if_supported(std::max(input_data[0], std::max(input_data[0], input_data[0])));
+      call.set_red_if_supported(r);
+      call.set_green_if_supported(r);
+      call.set_blue_if_supported(r);
+      call.set_brightness_if_supported(std::max(r, std::max(r, r)));
       call.set_color_brightness_if_supported(1.0f);
 
       // disable white channels
@@ -89,13 +93,14 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
       call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
       call.set_color_mode_if_supported(light::ColorMode::RGB_WHITE);
       call.set_color_mode_if_supported(light::ColorMode::RGB);
-      call.set_red_if_supported(float(input_data[0]) / 255.0f);
-      call.set_green_if_supported(float(input_data[1]) / 255.0f);
-      call.set_blue_if_supported(float(input_data[2]) / 255.0f);
+      call.set_red_if_supported(r);
+      call.set_green_if_supported(g);
+      call.set_blue_if_supported(b);
+      call.set_brightness_if_supported(std::max(r, std::max(g, b)));
       // call.set_brightness_if_supported(std::max(float(input_data[0]) / 255.0f),
       //                                  std::max((float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f)));
       // // call.set_brightness_if_supported(1.0f);
-      // call.set_color_brightness_if_supported(1.0f);
+      call.set_color_brightness_if_supported(1.0f);
 
       // disable white channels
       call.set_white_if_supported(0.0f);
