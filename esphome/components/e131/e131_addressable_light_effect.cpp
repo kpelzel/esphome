@@ -10,6 +10,8 @@ static const char *const TAG = "e131_addressable_light_effect";
 
 E131AddressableLightEffect::E131AddressableLightEffect(const std::string &name) : AddressableLightEffect(name) {}
 
+const std::string &E131AddressableLightEffect::get_name() { return AddressableLightEffect::get_name(); }
+
 // int E131AddressableLightEffect::get_data_per_universe() const { return get_lights_per_universe() * channels_; }
 
 // int E131AddressableLightEffect::get_lights_per_universe() const { return MAX_DATA_SIZE / channels_; }
