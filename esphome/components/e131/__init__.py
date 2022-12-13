@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components.light.types import AddressableLightEffect, LightEffect
-from esphome.components.light.effects import register_addressable_effect
+from esphome.components.light.effects import register_addressable_effect, register_rgb_effect
 from esphome.const import CONF_ID, CONF_NAME, CONF_METHOD, CONF_CHANNELS
 
 AUTO_LOAD = ["socket"]
