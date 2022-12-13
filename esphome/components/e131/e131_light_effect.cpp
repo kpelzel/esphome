@@ -61,6 +61,8 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   ESP_LOGV(TAG, "Applying data for '%s' (%f,%f,%f) on %d universe, for %d-%d.", get_name().c_str(),
            (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f), universe,
            output_offset, output_offset);
+  ESP_LOGV(TAG, "(%d,%d,%d) -> (%f,%f,%f)", input_data[0], input_data[1], input_data[2],
+           (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f));
 
   auto call = this->state_->turn_on();
 
