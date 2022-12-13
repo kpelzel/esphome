@@ -34,8 +34,6 @@ class E131LightEffectBase {
   void set_e131(E131Component *e131) { this->e131_ = e131; }
 
  protected:
-  E131Component *e131_{nullptr};
-
   virtual bool process_(int universe, const E131Packet &packet) = 0;
 
   int first_universe_{0};
