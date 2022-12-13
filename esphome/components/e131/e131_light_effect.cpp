@@ -58,8 +58,9 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   //     std::min(it->size(), std::min(output_offset + get_lights_per_universe(), output_offset + packet.count - 1));
   auto *input_data = packet.values + 1;
 
-  ESP_LOGV(TAG, "Applying data for '%s' on %d universe, for %d-%d.", get_name().c_str(), universe, output_offset,
-           output_offset);
+  ESP_LOGV(TAG, "Applying data for '%s' (%f,%f,%f) on %d universe, for %d-%d.", get_name().c_str(),
+           (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f), universe,
+           output_offset, output_offset);
 
   auto call = this->state_->turn_on();
 
