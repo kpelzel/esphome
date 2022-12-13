@@ -44,8 +44,10 @@ void E131LightEffect::apply() {
 
 bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   // check if this is our universe and data are valid
-  if (universe < first_universe_ || universe > get_last_universe())
+  if (universe < first_universe_ || universe > get_last_universe()) {
+    ESP_LOGV(TAG, "wrong universe");
     return false;
+  }
 
   int output_offset = (universe - first_universe_) * get_lights_per_universe();
   // limit amount of lights per universe and received
