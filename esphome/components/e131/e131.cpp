@@ -109,16 +109,21 @@ bool E131Component::process_(int universe, const E131Packet &packet) {
 
   ESP_LOGV(TAG, "Received E1.31 packet for %d universe, with %d bytes", universe, packet.count);
 
-  // for (auto *light_effect : light_effects_) {
-  //   handled = light_effect->process_(universe, packet) || handled;
-  // }
-
   for (auto *light_effect : this->light_effects_) {
-    bool success = light_effect->process_(universe, packet);
-    if (!success) {
+    bool blah = light_effect->process_(universe, packet);
+    ESP_LOGV(TAG, "blah: %d", universe, packet.count);
+    if (!blah) {
       return false;
     }
+    // handled = light_effect->process_(universe, packet) || handled;
   }
+
+  // for (auto *light_effect : this->light_effects_) {
+  //   bool success = light_effect->process_(universe, packet);
+  //   if (!success) {
+  //     return false;
+  //   }
+  // }
 
   return true;
 }
