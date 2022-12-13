@@ -12,6 +12,8 @@ static const char *const TAG = "e131_light_effect";
 
 E131LightEffect::E131LightEffect(const std::string &name) : LightEffect(name) {}
 
+const std::string &E131LightEffect::get_name() { return LightEffect::get_name(); }
+
 // int E131LightEffect::get_data_per_universe() const { return get_lights_per_universe() * channels_; }
 
 // int E131LightEffect::get_lights_per_universe() const { return MAX_DATA_SIZE / channels_; }
