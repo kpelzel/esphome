@@ -26,17 +26,11 @@ int E131AddressableLightEffect::get_universe_count() const {
 
 void E131AddressableLightEffect::start() {
   AddressableLightEffect::start();
-
-  if (this->e131_) {
-    this->e131_->add_effect(this);
-  }
+  E131LightEffectBase::start();
 }
 
 void E131AddressableLightEffect::stop() {
-  if (this->e131_) {
-    this->e131_->remove_effect(this);
-  }
-
+  E131LightEffectBase::stop();
   AddressableLightEffect::stop();
 }
 
