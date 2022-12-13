@@ -25,7 +25,7 @@ const std::string &E131LightEffect::get_name() { return LightEffect::get_name();
 int E131LightEffect::get_universe_count() const {
   // Round up to lights_per_universe
   auto lights = get_lights_per_universe();
-  return (0 + lights - 1) / lights;
+  return (1 + lights - 1) / lights;
 }
 
 void E131LightEffect::start() {
