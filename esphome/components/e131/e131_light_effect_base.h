@@ -23,10 +23,10 @@ class E131LightEffectBase {
   virtual void start();
   virtual void stop();
 
-  virtual int get_data_per_universe() const;
-  virtual int get_lights_per_universe() const;
-  virtual int get_first_universe() const;
-  virtual int get_last_universe() const;
+  int get_data_per_universe() const;
+  int get_lights_per_universe() const;
+  int get_first_universe() const;
+  int get_last_universe() const;
   virtual int get_universe_count() const;
 
   void set_first_universe(int universe) { this->first_universe_ = universe; }

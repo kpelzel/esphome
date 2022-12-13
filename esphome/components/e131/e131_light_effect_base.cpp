@@ -22,13 +22,13 @@ void E131LightEffectBase::stop() {
   }
 }
 
-// int E131LightEffectBase::get_data_per_universe() const { return get_lights_per_universe() * channels_; }
+int E131LightEffectBase::get_data_per_universe() const { return get_lights_per_universe() * channels_; }
 
-// int E131LightEffectBase::get_lights_per_universe() const { return MAX_DATA_SIZE / channels_; }
+int E131LightEffectBase::get_lights_per_universe() const { return MAX_DATA_SIZE / channels_; }
 
-// int E131LightEffectBase::get_first_universe() const { return first_universe_; }
+int E131LightEffectBase::get_first_universe() const { return first_universe_; }
 
-// int E131LightEffectBase::get_last_universe() const { return first_universe_ + get_universe_count() - 1; }
+int E131LightEffectBase::get_last_universe() const { return first_universe_ + get_universe_count() - 1; }
 
 // int E131LightEffectBase::get_universe_count() const {
 //   // Round up to lights_per_universe

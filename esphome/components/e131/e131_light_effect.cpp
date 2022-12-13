@@ -8,17 +8,17 @@ namespace esphome {
 namespace e131 {
 
 static const char *const TAG = "e131_light_effect";
-static const int MAX_DATA_SIZE = (sizeof(E131Packet::values) - 1);
+// static const int MAX_DATA_SIZE = (sizeof(E131Packet::values) - 1);
 
 E131LightEffect::E131LightEffect(const std::string &name) : LightEffect(name) {}
 
-int E131LightEffect::get_data_per_universe() const { return get_lights_per_universe() * channels_; }
+// int E131LightEffect::get_data_per_universe() const { return get_lights_per_universe() * channels_; }
 
-int E131LightEffect::get_lights_per_universe() const { return MAX_DATA_SIZE / channels_; }
+// int E131LightEffect::get_lights_per_universe() const { return MAX_DATA_SIZE / channels_; }
 
-int E131LightEffect::get_first_universe() const { return first_universe_; }
+// int E131LightEffect::get_first_universe() const { return first_universe_; }
 
-int E131LightEffect::get_last_universe() const { return first_universe_ + get_universe_count() - 1; }
+// int E131LightEffect::get_last_universe() const { return first_universe_ + get_universe_count() - 1; }
 
 int E131LightEffect::get_universe_count() const {
   // Round up to lights_per_universe
