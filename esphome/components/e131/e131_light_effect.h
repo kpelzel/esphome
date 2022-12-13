@@ -25,10 +25,10 @@ class E131LightEffect : public E131LightEffectBase, public light::LightEffect {
   void stop() override;
   void apply() override;
 
-  int get_data_per_universe() const override;
-  int get_lights_per_universe() const override;
-  int get_first_universe() const override;
-  int get_last_universe() const override;
+  // int get_data_per_universe() const override;
+  // int get_lights_per_universe() const override;
+  // int get_first_universe() const override;
+  // int get_last_universe() const override;
   int get_universe_count() const override;
 
  protected:
