@@ -86,10 +86,10 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
       call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
       call.set_color_mode_if_supported(light::ColorMode::RGB_WHITE);
       call.set_color_mode_if_supported(light::ColorMode::RGB);
-      call.set_red_if_supported(input_data[0]);
-      call.set_green_if_supported(input_data[1]);
-      call.set_blue_if_supported(input_data[2]);
-      call.set_brightness_if_supported(std::max(input_data[0], std::max(input_data[1], input_data[2])));
+      call.set_red_if_supported(float(input_data[0]) / 255.0f);
+      call.set_green_if_supported(float(input_data[1]) / 255.0f);
+      call.set_blue_if_supported(float(input_data[2]) / 255.0f);
+      call.set_brightness_if_supported(1.0f);
       call.set_color_brightness_if_supported(1.0f);
 
       // disable white channels
