@@ -58,17 +58,18 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   //     std::min(it->size(), std::min(output_offset + get_lights_per_universe(), output_offset + packet.count - 1));
   auto *input_data = packet.values + 1;
 
-  ESP_LOGV(TAG, "Applying data for '%s' (%f,%f,%f) on %d universe, for %d-%d.", get_name().c_str(),
-           (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f), universe,
-           output_offset, output_offset);
-  ESP_LOGV(TAG, "(%d,%d,%d) -> (%f,%f,%f)", input_data[0], input_data[1], input_data[2],
-           (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f));
+  // ESP_LOGV(TAG, "Applying data for '%s' (%f,%f,%f) on %d universe, for %d-%d.", get_name().c_str(),
+  //          (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f),
+  //          universe, output_offset, output_offset);
+  // ESP_LOGV(TAG, "(%d,%d,%d) -> (%f,%f,%f)", input_data[0], input_data[1], input_data[2],
+  //          (float(input_data[0]) / 255.0f), (float(input_data[1]) / 255.0f), (float(input_data[2]) / 255.0f));
 
   auto call = this->state_->turn_on();
 
   float r = (float) input_data[0] / 255.0f;
   float g = (float) input_data[1] / 255.0f;
   float b = (float) input_data[2] / 255.0f;
+  float w = (float) input_data[3] / 255.0f;
 
   switch (channels_) {
     case E131_MONO:
@@ -113,16 +114,16 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
       call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
       call.set_color_mode_if_supported(light::ColorMode::RGB_WHITE);
       call.set_color_mode_if_supported(light::ColorMode::RGB);
-      call.set_red_if_supported(input_data[0]);
-      call.set_green_if_supported(input_data[1]);
-      call.set_blue_if_supported(input_data[2]);
-      call.set_brightness_if_supported(std::max(input_data[0], std::max(input_data[1], input_data[2])));
+      call.set_red_if_supported(r);
+      call.set_green_if_supported(g);
+      call.set_blue_if_supported(b);
+      call.set_brightness_if_supported(std::max(r, std::max(g, b)));
       call.set_color_brightness_if_supported(1.0f);
 
-      // disable white channels
-      call.set_white_if_supported(input_data[3]);
-      call.set_cold_white_if_supported(input_data[3]);
-      call.set_warm_white_if_supported(input_data[3]);
+      // set white channels
+      call.set_white_if_supported(w);
+      call.set_cold_white_if_supported(w);
+      call.set_warm_white_if_supported(w);
   }
 
   call.set_transition_length_if_supported(0);
