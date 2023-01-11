@@ -30,12 +30,6 @@ int E131LightEffectBase::get_first_universe() const { return first_universe_; }
 
 int E131LightEffectBase::get_last_universe() const { return first_universe_ + get_universe_count() - 1; }
 
-// int E131LightEffectBase::get_universe_count() const {
-//   // Round up to lights_per_universe
-//   auto lights = get_lights_per_universe();
-//   return (1 + lights - 1) / lights;
-// }
-
 }  // namespace e131
 }  // namespace esphome
 

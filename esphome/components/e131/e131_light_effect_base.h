@@ -14,6 +14,16 @@ struct E131Packet;
 
 enum E131LightChannels { E131_MONO = 1, E131_RGB = 3, E131_RGBW = 4 };
 
+struct E131ChannelMap {
+  int32_t red;
+  int32_t green;
+  int32_t blue;
+  int32_t white;
+  int32_t warm_white;
+  int32_t cold_white;
+  int32_t color_temp;
+};
+
 class E131LightEffectBase {
  public:
   E131LightEffectBase();
@@ -31,6 +41,7 @@ class E131LightEffectBase {
 
   void set_first_universe(int universe) { this->first_universe_ = universe; }
   void set_channels(E131LightChannels channels) { this->channels_ = channels; }
+  void set_channel_map(const E131ChannelMap &channel_map) { this->channel_map_ = channel_map; }
   void set_e131(E131Component *e131) { this->e131_ = e131; }
 
  protected:
@@ -39,6 +50,7 @@ class E131LightEffectBase {
   int first_universe_{0};
   int last_universe_{0};
   E131LightChannels channels_{E131_RGB};
+  E131ChannelMap channel_map_ = {-1, -1, -1, -1, -1, -1, -1};
   E131Component *e131_{nullptr};
 
   friend class E131Component;
