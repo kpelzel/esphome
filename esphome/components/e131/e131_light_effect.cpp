@@ -55,10 +55,10 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   // call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
   // call.set_color_mode_if_supported(light::ColorMode::RGB_COLD_WARM_WHITE);
 
-  float r = 0.0;
-  float g = 0.0;
-  float b = 0.0;
-  float w = 0.0;
+  // float r = 0.0;
+  // float g = 0.0;
+  // float b = 0.0;
+  // float w = 0.0;
   // float cw = 0.0;
   // float ww = 0.0;
   // float ct = 0.0;
