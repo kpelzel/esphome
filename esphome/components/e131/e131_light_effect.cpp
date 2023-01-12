@@ -55,39 +55,45 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
   call.set_color_mode_if_supported(light::ColorMode::RGB_COLD_WARM_WHITE);
 
-  float brightness = 0.0;
+  // float brightness = 0.0;
+  float r = 0.0;
+  float g = 0.0;
+  float b = 0.0;
+  float w = 0.0;
+  float cw = 0.0;
+  float ww = 0.0;
 
   // set color channels
   if (channel_map_.red != -1) {
-    float r = (float) input_data[channel_map_.red] / 255.0f;
+    r = (float) input_data[channel_map_.red] / 255.0f;
     call.set_red_if_supported(r);
-    brightness = std::max(brightness, r);
+    // brightness = std::max(brightness, r);
   }
   if (channel_map_.green != -1) {
-    float g = (float) input_data[channel_map_.green] / 255.0f;
+    g = (float) input_data[channel_map_.green] / 255.0f;
     call.set_green_if_supported(g);
-    brightness = std::max(brightness, g);
+    // brightness = std::max(brightness, g);
   }
   if (channel_map_.blue != -1) {
-    float b = (float) input_data[channel_map_.blue] / 255.0f;
+    b = (float) input_data[channel_map_.blue] / 255.0f;
     call.set_blue_if_supported(b);
-    brightness = std::max(brightness, b);
+    // brightness = std::max(brightness, b);
   }
   // set white channels
   if (channel_map_.white != -1) {
-    float w = (float) input_data[channel_map_.white] / 255.0f;
+    w = (float) input_data[channel_map_.white] / 255.0f;
     call.set_white_if_supported(w);
-    brightness = std::max(brightness, w);
+    // brightness = std::max(brightness, w);
   }
   if (channel_map_.cold_white != -1) {
-    float cw = (float) input_data[channel_map_.cold_white] / 255.0f;
+    cw = (float) input_data[channel_map_.cold_white] / 255.0f;
     call.set_cold_white_if_supported(cw);
-    brightness = std::max(brightness, cw);
+    // brightness = std::max(brightness, cw);
   }
   if (channel_map_.warm_white != -1) {
-    float ww = (float) input_data[channel_map_.warm_white] / 255.0f;
+    ww = (float) input_data[channel_map_.warm_white] / 255.0f;
     call.set_warm_white_if_supported(ww);
-    brightness = std::max(brightness, ww);
+    // brightness = std::max(brightness, ww);
   }
   if (channel_map_.color_temp != -1) {
     float ct = (float) input_data[channel_map_.color_temp] / 255.0f;
@@ -95,7 +101,7 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   }
 
   // set brightness to max
-  call.set_brightness_if_supported(brightness);
+  call.set_brightness_if_supported(std::max(r, std::max(g, b)));
   call.set_color_brightness_if_supported(1.0f);
 
   call.set_transition_length_if_supported(0);
