@@ -55,42 +55,47 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   // call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
   // call.set_color_mode_if_supported(light::ColorMode::RGB_COLD_WARM_WHITE);
 
-  // float brightness = 0.0;
   float r = 0.0;
   float g = 0.0;
   float b = 0.0;
   float w = 0.0;
-  float cw = 0.0;
-  float ww = 0.0;
-  float ct = 0.0;
+  // float cw = 0.0;
+  // float ww = 0.0;
+  // float ct = 0.0;
+
+  float r = (float) input_data[0] / 255.0f;
+  float g = (float) input_data[1] / 255.0f;
+  float b = (float) input_data[2] / 255.0f;
+  float w = (float) input_data[3] / 255.0f;
 
   // set color channels
-  if (channel_map_.red != -1)
-    r = (float) input_data[channel_map_.red] / 255.0f;
-  if (channel_map_.green != -1)
-    g = (float) input_data[channel_map_.green] / 255.0f;
-  if (channel_map_.blue != -1)
-    b = (float) input_data[channel_map_.blue] / 255.0f;
-  // set white channels
-  if (channel_map_.white != -1)
-    w = (float) input_data[channel_map_.white] / 255.0f;
-  if (channel_map_.cold_white != -1)
-    cw = (float) input_data[channel_map_.cold_white] / 255.0f;
-  if (channel_map_.warm_white != -1)
-    ww = (float) input_data[channel_map_.warm_white] / 255.0f;
-  if (channel_map_.color_temp != -1)
-    ct = (float) input_data[channel_map_.color_temp] / 255.0f;
+  // if (channel_map_.red != -1)
+  //   r = (float) input_data[channel_map_.red] / 255.0f;
+  // if (channel_map_.green != -1)
+  //   g = (float) input_data[channel_map_.green] / 255.0f;
+  // if (channel_map_.blue != -1)
+  //   b = (float) input_data[channel_map_.blue] / 255.0f;
+  // // set white channels
+  // if (channel_map_.white != -1)
+  //   w = (float) input_data[channel_map_.white] / 255.0f;
+  // if (channel_map_.cold_white != -1)
+  //   cw = (float) input_data[channel_map_.cold_white] / 255.0f;
+  // if (channel_map_.warm_white != -1)
+  //   ww = (float) input_data[channel_map_.warm_white] / 255.0f;
+  // if (channel_map_.color_temp != -1)
+  //   ct = (float) input_data[channel_map_.color_temp] / 255.0f;
 
   call.set_red_if_supported(r);
   call.set_green_if_supported(g);
   call.set_blue_if_supported(b);
   call.set_white_if_supported(w);
-  call.set_cold_white_if_supported(cw);
-  call.set_warm_white_if_supported(ww);
-  call.set_color_temperature_if_supported(ct);
+  // call.set_cold_white_if_supported(cw);
+  // call.set_warm_white_if_supported(ww);
+  // call.set_color_temperature_if_supported(ct);
 
   // set brightness to max
-  call.set_brightness_if_supported(std::max(r, std::max(g, std::max(b, std::max(w, std::max(cw, ww))))));
+  // call.set_brightness_if_supported(std::max(r, std::max(g, std::max(b, std::max(w, std::max(cw, ww))))));
+  call.set_brightness_if_supported(std::max(r, std::max(g, b)));
   call.set_color_brightness_if_supported(1.0f);
 
   call.set_transition_length_if_supported(0);
