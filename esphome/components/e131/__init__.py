@@ -121,23 +121,23 @@ async def e131_light_effect_to_code(config, effect_id):
             ),
             (
                 "blue",
-                conf_channel_map.get(CONF_RED, -1),
+                conf_channel_map.get(CONF_BLUE, -1),
             ),
             (
                 "white",
-                conf_channel_map.get(CONF_RED, -1),
+                conf_channel_map.get(CONF_WHITE, -1),
             ),
             (
                 "warm_white",
-                conf_channel_map.get(CONF_RED, -1),
+                conf_channel_map.get(CONF_WARM_WHITE, -1),
             ),
             (
                 "cold_white",
-                conf_channel_map.get(CONF_RED, -1),
+                conf_channel_map.get(CONF_COLD_WHITE, -1),
             ),
             (
                 "color_temp",
-                conf_channel_map.get(CONF_RED, -1),
+                conf_channel_map.get(CONF_COLOR_TEMPERATURE, -1),
             ),
         )
         cg.add(effect.set_channel_map(channel_map))
