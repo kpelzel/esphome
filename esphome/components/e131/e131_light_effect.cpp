@@ -84,9 +84,9 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   call.set_green_if_supported(g);
   call.set_blue_if_supported(b);
   call.set_white_if_supported(w);
-  call.set_cold_white_if_supported(cw);
-  call.set_warm_white_if_supported(ww);
-  call.set_color_temperature_if_supported(ct);
+  // call.set_cold_white_if_supported(cw);
+  // call.set_warm_white_if_supported(ww);
+  // call.set_color_temperature_if_supported(ct);
 
   // set brightness to max
   call.set_brightness_if_supported(std::max(r, std::max(g, std::max(b, std::max(w, std::max(cw, ww))))));
@@ -98,9 +98,6 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
 
   call.perform();
 
-  // manually calling loop otherwise we just go straight into processing the next DDP
-  // packet without executing the light loop to display the just-processed packet.
-  // Not totally sure why or if there is a better way to fix, but this works.
   // this->state_->loop();
 
   return true;
