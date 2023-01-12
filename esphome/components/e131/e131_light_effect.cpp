@@ -80,10 +80,12 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   if (channel_map_.color_temp != -1)
     ct = (float) input_data[channel_map_.color_temp] / 255.0f;
 
-  call.set_red_if_supported(r);
-  call.set_green_if_supported(g);
-  call.set_blue_if_supported(b);
-  call.set_white_if_supported(w);
+  call.set_rgbw(r, g, b, w);
+
+  // call.set_red_if_supported(r);
+  // call.set_green_if_supported(g);
+  // call.set_blue_if_supported(b);
+  // call.set_white_if_supported(w);
   // call.set_cold_white_if_supported(cw);
   // call.set_warm_white_if_supported(ww);
   // call.set_color_temperature_if_supported(ct);
