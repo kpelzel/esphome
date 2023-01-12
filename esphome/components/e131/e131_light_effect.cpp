@@ -47,13 +47,13 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   auto call = this->state_->turn_on();
 
   // set color mode
-  call.set_color_mode_if_supported(light::ColorMode::WHITE);
-  call.set_color_mode_if_supported(light::ColorMode::COLOR_TEMPERATURE);
-  call.set_color_mode_if_supported(light::ColorMode::COLD_WARM_WHITE);
-  call.set_color_mode_if_supported(light::ColorMode::RGB);
+  // call.set_color_mode_if_supported(light::ColorMode::WHITE);
+  // call.set_color_mode_if_supported(light::ColorMode::COLOR_TEMPERATURE);
+  // call.set_color_mode_if_supported(light::ColorMode::COLD_WARM_WHITE);
+  // call.set_color_mode_if_supported(light::ColorMode::RGB);
   call.set_color_mode_if_supported(light::ColorMode::RGB_WHITE);
-  call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
-  call.set_color_mode_if_supported(light::ColorMode::RGB_COLD_WARM_WHITE);
+  // call.set_color_mode_if_supported(light::ColorMode::RGB_COLOR_TEMPERATURE);
+  // call.set_color_mode_if_supported(light::ColorMode::RGB_COLD_WARM_WHITE);
 
   // float brightness = 0.0;
   float r = 0.0;
@@ -101,7 +101,7 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   }
 
   // set brightness to max
-  call.set_brightness_if_supported(std::max(r, std::max(g, b)));
+  call.set_brightness_if_supported(std::max(r, std::max(g, std::max(b, std::max(w, std::max(cw, ww))))));
   call.set_color_brightness_if_supported(1.0f);
 
   call.set_transition_length_if_supported(0);
