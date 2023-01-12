@@ -132,7 +132,7 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
 
   call.perform();
 
-  // this->state_->loop();
+  this->state_->loop();
 
   return true;
 }
