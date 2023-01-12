@@ -64,61 +64,61 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   float ct = 0.0;
 
   // set color channels
-  if (channel_map_.red != -1)
-    r = (float) input_data[channel_map_.red] / 255.0f;
-  if (channel_map_.green != -1)
-    g = (float) input_data[channel_map_.green] / 255.0f;
-  if (channel_map_.blue != -1)
-    b = (float) input_data[channel_map_.blue] / 255.0f;
-  // set white channels
-  if (channel_map_.white != -1)
-    w = (float) input_data[channel_map_.white] / 255.0f;
-  if (channel_map_.cold_white != -1)
-    cw = (float) input_data[channel_map_.cold_white] / 255.0f;
-  if (channel_map_.warm_white != -1)
-    ww = (float) input_data[channel_map_.warm_white] / 255.0f;
-  if (channel_map_.color_temp != -1)
-    ct = (float) input_data[channel_map_.color_temp] / 255.0f;
-
-  // if (channel_map_.red != -1) {
+  // if (channel_map_.red != -1)
   //   r = (float) input_data[channel_map_.red] / 255.0f;
-  //   call.set_red_if_supported(r);
-  // }
-  // if (channel_map_.green != -1) {
+  // if (channel_map_.green != -1)
   //   g = (float) input_data[channel_map_.green] / 255.0f;
-  //   call.set_green_if_supported(g);
-  // }
-  // if (channel_map_.blue != -1) {
+  // if (channel_map_.blue != -1)
   //   b = (float) input_data[channel_map_.blue] / 255.0f;
-  //   call.set_blue_if_supported(b);
-  // }
   // // set white channels
-  // if (channel_map_.white != -1) {
+  // if (channel_map_.white != -1)
   //   w = (float) input_data[channel_map_.white] / 255.0f;
-  //   call.set_white_if_supported(w);
-  // }
-  // if (channel_map_.cold_white != -1) {
+  // if (channel_map_.cold_white != -1)
   //   cw = (float) input_data[channel_map_.cold_white] / 255.0f;
-  //   call.set_cold_white_if_supported(cw);
-  // }
-  // if (channel_map_.warm_white != -1) {
+  // if (channel_map_.warm_white != -1)
   //   ww = (float) input_data[channel_map_.warm_white] / 255.0f;
-  //   call.set_warm_white_if_supported(ww);
-  // }
-  // if (channel_map_.color_temp != -1) {
+  // if (channel_map_.color_temp != -1)
   //   ct = (float) input_data[channel_map_.color_temp] / 255.0f;
-  //   call.set_color_temperature_if_supported(ct);
-  // }
+
+  if (channel_map_.red != -1) {
+    r = (float) input_data[channel_map_.red] / 255.0f;
+    call.set_red_if_supported(r);
+  }
+  if (channel_map_.green != -1) {
+    g = (float) input_data[channel_map_.green] / 255.0f;
+    call.set_green_if_supported(g);
+  }
+  if (channel_map_.blue != -1) {
+    b = (float) input_data[channel_map_.blue] / 255.0f;
+    call.set_blue_if_supported(b);
+  }
+  // set white channels
+  if (channel_map_.white != -1) {
+    w = (float) input_data[channel_map_.white] / 255.0f;
+    call.set_white_if_supported(w);
+  }
+  if (channel_map_.cold_white != -1) {
+    cw = (float) input_data[channel_map_.cold_white] / 255.0f;
+    call.set_cold_white_if_supported(cw);
+  }
+  if (channel_map_.warm_white != -1) {
+    ww = (float) input_data[channel_map_.warm_white] / 255.0f;
+    call.set_warm_white_if_supported(ww);
+  }
+  if (channel_map_.color_temp != -1) {
+    ct = (float) input_data[channel_map_.color_temp] / 255.0f;
+    call.set_color_temperature_if_supported(ct);
+  }
 
   // call.set_rgbw(r, g, b, w);
 
-  call.set_red_if_supported(r);
-  call.set_green_if_supported(g);
-  call.set_blue_if_supported(b);
-  call.set_white_if_supported(w);
-  call.set_cold_white_if_supported(cw);
-  call.set_warm_white_if_supported(ww);
-  call.set_color_temperature_if_supported(ct);
+  // call.set_red_if_supported(r);
+  // call.set_green_if_supported(g);
+  // call.set_blue_if_supported(b);
+  // call.set_white_if_supported(w);
+  // call.set_cold_white_if_supported(cw);
+  // call.set_warm_white_if_supported(ww);
+  // call.set_color_temperature_if_supported(ct);
 
   // set brightness to max
   // call.set_brightness_if_supported(std::max(r, std::max(g, std::max(b, std::max(w, std::max(cw, ww))))));
