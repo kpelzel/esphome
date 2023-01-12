@@ -109,7 +109,7 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
   // Not totally sure why or if there is a better way to fix, but this works.
   // this->state_->loop();
 
-  // return true;
+  return true;
 }
 
 }  // namespace e131
