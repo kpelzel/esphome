@@ -95,7 +95,7 @@ bool E131LightEffect::process_(int universe, const E131Packet &packet) {
 
   // set brightness to max
   // call.set_brightness_if_supported(std::max(r, std::max(g, std::max(b, std::max(w, std::max(cw, ww))))));
-  call.set_brightness_if_supported(std::max(r, std::max(g, b)));
+  call.set_brightness_if_supported(1.0f);
   call.set_color_brightness_if_supported(1.0f);
 
   call.set_transition_length_if_supported(0);
