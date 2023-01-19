@@ -10,7 +10,6 @@ from esphome.const import (
     CONF_NAME,
     CONF_METHOD,
     CONF_CHANNELS,
-    CONF_CHANNEL_MAP,
     CONF_RED,
     CONF_GREEN,
     CONF_BLUE,
@@ -20,6 +19,7 @@ from esphome.const import (
     CONF_COLOR_TEMPERATURE,
 )
 
+CONF_CHANNEL_MAP = "channel_map"
 
 AUTO_LOAD = ["socket"]
 DEPENDENCIES = ["network"]
