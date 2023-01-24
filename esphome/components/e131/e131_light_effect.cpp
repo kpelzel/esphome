@@ -52,7 +52,7 @@ bool E131LightEffect::process(int universe, const E131Packet &packet) {
         call.set_green_if_supported(input_data[0] / 255.0);
         call.set_blue_if_supported(input_data[0] / 255.0);
         call.set_white_if_supported(input_data[0] / 255.0);
-        call.set_brightness_if_supported(input_data[0] / 255.0);
+        call.set_color_brightness_if_supported(input_data[0] / 255.0);
       }
       break;
 
@@ -62,7 +62,7 @@ bool E131LightEffect::process(int universe, const E131Packet &packet) {
         call.set_green_if_supported(input_data[1] / 255.0);
         call.set_blue_if_supported(input_data[2] / 255.0);
         call.set_white_if_supported((input_data[0] + input_data[1] + input_data[2]) / 3.0 / 255.0);
-        call.set_brightness_if_supported(std::max(input_data[0], std::max(input_data[1], input_data[2])) / 255.0);
+        call.set_color_brightness_if_supported(std::max(input_data[0], std::max(input_data[1], input_data[2])) / 255.0);
       }
       break;
 
@@ -72,12 +72,12 @@ bool E131LightEffect::process(int universe, const E131Packet &packet) {
         call.set_green_if_supported(input_data[1] / 255.0);
         call.set_blue_if_supported(input_data[2] / 255.0);
         call.set_white_if_supported(input_data[3] / 255.0);
-        call.set_brightness_if_supported(
-            std::max(input_data[0], std::max(input_data[1], std::max(input_data[2], input_data[3]))) / 255.0);
+        call.set_color_brightness_if_supported(std::max(input_data[0], std::max(input_data[1], input_data[2])) / 255.0);
       }
       break;
   }
 
+  call.set_brightness_if_supported(1.0f);
   call.set_transition_length_if_supported(0);
   call.set_publish(false);
   call.set_save(false);
