@@ -57,9 +57,9 @@ async def to_code(config):
     },
 )
 @register_addressable_effect(
-    "addressable_e131",
+    "e131",
     E131AddressableLightEffect,
-    "Addressable E1.31",
+    "E1.31",
     {
         cv.GenerateID(CONF_E131_ID): cv.use_id(E131Component),
         cv.Required(CONF_UNIVERSE): cv.int_range(min=1, max=512),
