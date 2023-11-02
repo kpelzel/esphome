@@ -59,13 +59,13 @@ void E131Component::loop() {
   int universe = 0;
   uint8_t buf[1460];
 
-  ticker++;
-  if( ticker > tickerJoin){
-    ESP_LOGV(TAG, "joining groups again");
-    bool blah = join_igmp_groups_();
-    ESP_LOGV(TAG, "joining groups again %s", blah);
-    ticker = 0;
-  }
+  // ticker++;
+  // if( ticker > tickerJoin){
+  //   ESP_LOGV(TAG, "joining groups again");
+  //   bool blah = join_igmp_groups_();
+  //   ESP_LOGV(TAG, "joining groups again %s", blah);
+  //   ticker = 0;
+  // }
 
   ssize_t len = this->socket_->read(buf, sizeof(buf));
   if (len == -1) {
