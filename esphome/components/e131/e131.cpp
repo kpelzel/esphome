@@ -7,6 +7,8 @@ namespace e131 {
 
 static const char *const TAG = "e131";
 static const int PORT = 5568;
+static const int tickerJoin = 1000;
+int ticker = 0;
 
 E131Component::E131Component() {}
 
@@ -56,6 +58,12 @@ void E131Component::loop() {
   E131Packet packet;
   int universe = 0;
   uint8_t buf[1460];
+
+  ticker++;
+  if( ticker > tickerJoin){
+    join_igmp_groups_();
+    ticker = 0;
+  }
 
   ssize_t len = this->socket_->read(buf, sizeof(buf));
   if (len == -1) {
