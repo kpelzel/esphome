@@ -37,10 +37,10 @@ class E131Component : public esphome::Component {
   void set_method(E131ListenMethod listen_method) { this->listen_method_ = listen_method; }
 
  protected:
-  std::unique_ptr<UDP> udp_;
-  std::set<E131LightEffectBase *> light_effects_;
-  std::map<int, int> universe_consumers_;
-  std::map<int, E131Packet> universe_packets_;
+  // std::unique_ptr<UDP> udp_;
+  // std::set<E131LightEffectBase *> light_effects_;
+  // std::map<int, int> universe_consumers_;
+  // std::map<int, E131Packet> universe_packets_;
 
   bool packet_(const std::vector<uint8_t> &data, int &universe, E131Packet &packet);
   bool process_(int universe, const E131Packet &packet);
