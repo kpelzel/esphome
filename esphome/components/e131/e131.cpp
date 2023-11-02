@@ -61,6 +61,7 @@ void E131Component::loop() {
 
   ticker++;
   if( ticker > tickerJoin){
+    ESP_LOGV(TAG, "joining groups again");
     bool blah = join_igmp_groups_();
     ESP_LOGV(TAG, "joining groups again %s", blah);
     ticker = 0;
