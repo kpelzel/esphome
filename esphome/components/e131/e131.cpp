@@ -7,7 +7,7 @@ namespace e131 {
 
 static const char *const TAG = "e131";
 static const int PORT = 5568;
-static const int tickerJoin = 100;
+static const int tickerJoin = 1000;
 int ticker = 0;
 
 E131Component::E131Component() {}
