@@ -1,0 +1,7 @@
+stepper:
+  - platform: tmc5160
+    id: tmc5160_ramp
+    cs_pin: ${cs_pin}
+    max_speed: 2000 steps/s
+    acceleration: 10000 steps/s^2
+    deceleration: 10000 steps/s^2
