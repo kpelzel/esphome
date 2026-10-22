@@ -28,9 +28,12 @@ static constexpr uint32_t RAMPMODE_POSITION = 0x00;
 static constexpr uint32_t IHOLD_IRUN_FULL = 0x00081F1F;
 
 void TMC5160::write_reg_(uint8_t address, uint32_t value) {
-  std::array<uint8_t, 5> data{static_cast<uint8_t>(address | 0x80), static_cast<uint8_t>(value >> 24),
-                              static_cast<uint8_t>(value >> 16), static_cast<uint8_t>(value >> 8),
-                              static_cast<uint8_t>(value)};
+  std::array<uint8_t, 5> data{
+      static_cast<uint8_t>(address | 0x80), static_cast<uint8_t>(value >> 24), static_cast<uint8_t>(value >> 16),
+      static_cast<uint8_t>(value >> 8),     static_cast<uint8_t>(value),
+  };
+
+  ESP_LOGD(TAG, "WRITE reg 0x%02X: %02X %02X %02X %02X %02X", address, data[0], data[1], data[2], data[3], data[4]);
 
   this->enable();
   this->transfer_array(data.data(), data.size());
@@ -40,24 +43,23 @@ void TMC5160::write_reg_(uint8_t address, uint32_t value) {
 uint32_t TMC5160::read_reg_(uint8_t address, bool log_raw) {
   std::array<uint8_t, 5> request{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
 
+  std::array<uint8_t, 5> response{};
+
   this->enable();
   this->transfer_array(request.data(), request.size());
   this->disable();
-
-  // The next datagram clocks out the result of the previous read.
-  std::array<uint8_t, 5> response{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
 
   this->enable();
   this->transfer_array(response.data(), response.size());
   this->disable();
 
   if (log_raw) {
-    ESP_LOGD(TAG, "Raw frame for reg 0x%02X: %02X %02X %02X %02X %02X", address, response[0], response[1], response[2],
+    ESP_LOGD(TAG, "READ reg 0x%02X response: %02X %02X %02X %02X %02X", address, response[0], response[1], response[2],
              response[3], response[4]);
   }
 
-  return (static_cast<uint32_t>(response[1]) << 24) | (static_cast<uint32_t>(response[2]) << 16) |
-         (static_cast<uint32_t>(response[3]) << 8) | response[4];
+  return (uint32_t(response[1]) << 24) | (uint32_t(response[2]) << 16) | (uint32_t(response[3]) << 8) |
+         uint32_t(response[4]);
 }
 
 void TMC5160::apply_motion_config_() {
@@ -78,26 +80,13 @@ void TMC5160::apply_motion_config_() {
 }
 
 void TMC5160::setup() {
-  this->spi_setup();  // Initialize the SPI device before any transfers
+  this->spi_setup();
 
-  this->write_reg_(REGISTER_GSTAT, 0x07);  // clear latched error flags
   this->write_reg_(REGISTER_IHOLD_IRUN, IHOLD_IRUN_FULL);
   delay(10);
 
-  ESP_LOGD(TAG, "IHOLD_IRUN readback: %08" PRIX32, this->read_reg_(REGISTER_IHOLD_IRUN, true));
-
-  this->apply_motion_config_();
-
-  // Hold the position the chip sees at boot, then enable position mode.
-  const uint32_t actual = this->read_reg_(REGISTER_XACTUAL);
-  // A living link reads IHOLD_IRUN back exactly as written above (00081F1F).
-  ESP_LOGD(TAG, "SPI probe: IHOLD_IRUN=%08X (want 00081F1F) DRV_STATUS=%08X GCONF=%08X XACTUAL=%08X",
-           this->read_reg_(REGISTER_IHOLD_IRUN, true), this->read_reg_(REGISTER_DRV_STATUS),
-           this->read_reg_(REGISTER_GCONF), actual);
-  this->write_reg_(REGISTER_XTARGET, actual);
-  this->write_reg_(REGISTER_RAMPMODE, RAMPMODE_POSITION);
-  this->current_position = static_cast<int32_t>(actual) >> 8;
-  this->written_target_ = this->current_position;
+  const uint32_t value = this->read_reg_(REGISTER_IHOLD_IRUN, true);
+  ESP_LOGD(TAG, "IHOLD_IRUN readback: %08" PRIX32, value);
 }
 
 void TMC5160::loop() {
