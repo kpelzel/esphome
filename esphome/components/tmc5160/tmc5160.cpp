@@ -28,13 +28,9 @@ static constexpr uint32_t RAMPMODE_POSITION = 0x00;
 static constexpr uint32_t IHOLD_IRUN_FULL = 0x00081F1F;
 
 void TMC5160::write_reg_(uint8_t address, uint32_t value) {
-  std::array<uint8_t, 5> data{
-      static_cast<uint8_t>(address | 0x80),
-      static_cast<uint8_t>(value >> 24),
-      static_cast<uint8_t>(value >> 16),
-      static_cast<uint8_t>(value >> 8),
-      static_cast<uint8_t>(value)
-  };
+  std::array<uint8_t, 5> data{static_cast<uint8_t>(address | 0x80), static_cast<uint8_t>(value >> 24),
+                              static_cast<uint8_t>(value >> 16), static_cast<uint8_t>(value >> 8),
+                              static_cast<uint8_t>(value)};
 
   this->enable();
   this->transfer_array(data.data(), data.size());
@@ -42,33 +38,26 @@ void TMC5160::write_reg_(uint8_t address, uint32_t value) {
 }
 
 uint32_t TMC5160::read_reg_(uint8_t address, bool log_raw) {
-  std::array<uint8_t, 5> request{
-      static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0
-  };
+  std::array<uint8_t, 5> request{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
 
   this->enable();
   this->transfer_array(request.data(), request.size());
   this->disable();
 
   // The next datagram clocks out the result of the previous read.
-  std::array<uint8_t, 5> response{
-      static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0
-  };
+  std::array<uint8_t, 5> response{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
 
   this->enable();
   this->transfer_array(response.data(), response.size());
   this->disable();
 
   if (log_raw) {
-    ESP_LOGD(TAG, "Raw frame for reg 0x%02X: %02X %02X %02X %02X %02X",
-             address, response[0], response[1], response[2],
+    ESP_LOGD(TAG, "Raw frame for reg 0x%02X: %02X %02X %02X %02X %02X", address, response[0], response[1], response[2],
              response[3], response[4]);
   }
 
-  return (static_cast<uint32_t>(response[1]) << 24) |
-         (static_cast<uint32_t>(response[2]) << 16) |
-         (static_cast<uint32_t>(response[3]) << 8) |
-         response[4];
+  return (static_cast<uint32_t>(response[1]) << 24) | (static_cast<uint32_t>(response[2]) << 16) |
+         (static_cast<uint32_t>(response[3]) << 8) | response[4];
 }
 
 void TMC5160::apply_motion_config_() {
@@ -89,6 +78,8 @@ void TMC5160::apply_motion_config_() {
 }
 
 void TMC5160::setup() {
+  this->spi_setup();  // Initialize the SPI device before any transfers
+
   this->write_reg_(REGISTER_GSTAT, 0x07);  // clear latched error flags
   this->write_reg_(REGISTER_IHOLD_IRUN, IHOLD_IRUN_FULL);
   this->apply_motion_config_();
