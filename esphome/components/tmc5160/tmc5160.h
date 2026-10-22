@@ -40,7 +40,7 @@ class TMC5160 : public Component,
     REGISTER_DRV_STATUS = 0x6F,
   };
 
-  uint32_t read_reg_(uint8_t address);
+  uint32_t read_reg_(uint8_t address, bool log_raw = false);
   void write_reg_(uint8_t address, uint32_t value);
   void apply_motion_config_();
 
