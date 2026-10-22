@@ -68,8 +68,10 @@ void TMC5160::setup() {
 
   // Hold the position the chip sees at boot, then enable position mode.
   const uint32_t actual = this->read_reg_(REGISTER_XACTUAL);
-  ESP_LOGD(TAG, "SPI probe: GSTAT=%08X GCONF=%08X XACTUAL=%08X", this->read_reg_(REGISTER_GSTAT),
-           this->read_reg_(REGISTER_GCONF), actual);
+  // A living link reads IHOLD_IRUN back exactly as written above (00081F1F).
+  ESP_LOGD(TAG, "SPI probe: IHOLD_IRUN=%08X (want 00081F1F) DRV_STATUS=%08X GCONF=%08X XACTUAL=%08X",
+           this->read_reg_(REGISTER_IHOLD_IRUN), this->read_reg_(REGISTER_DRV_STATUS), this->read_reg_(REGISTER_GCONF),
+           actual);
   this->write_reg_(REGISTER_XTARGET, actual);
   this->write_reg_(REGISTER_RAMPMODE, RAMPMODE_POSITION);
   this->current_position = static_cast<int32_t>(actual) >> 8;
