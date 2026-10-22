@@ -48,6 +48,7 @@ class TMC5160 : public Component,
 
   /// Last target written to XTARGET, used to detect config changes in loop().
   int32_t written_target_{0};
+  uint32_t configured_vmax_{800000};
 };
 
 }  // namespace esphome::tmc5160

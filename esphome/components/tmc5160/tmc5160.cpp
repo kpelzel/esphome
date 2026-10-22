@@ -164,30 +164,39 @@ void TMC5160::setup() {
 void TMC5160::loop() {
   if (this->target_position != this->written_target_) {
     this->written_target_ = this->target_position;
+
+    // Restore the configured speed before starting the next move.
+    this->write_reg_(REGISTER_VSTART, 0);
+    this->write_reg_(REGISTER_VMAX, this->configured_vmax_);
+
     ESP_LOGD(TAG, "Target changed to %" PRId32 ", writing XTARGET", this->written_target_);
+
     this->write_reg_(REGISTER_XTARGET, static_cast<uint32_t>(static_cast<int32_t>(this->written_target_)) * 256);
   }
+
   const int32_t actual = static_cast<int32_t>(this->read_reg_(REGISTER_XACTUAL)) >> 8;
+
   if (actual != this->current_position) {
     this->current_position = actual;
   }
 }
 
 void TMC5160::stop_motion() {
-  // Read the live hardware position (native 1/256-step units).
+  // Snapshot the current hardware position for ESPHome bookkeeping.
   const int32_t actual_raw = static_cast<int32_t>(this->read_reg_(REGISTER_XACTUAL));
-
-  // Synchronize ESPHome's position bookkeeping.
   const int32_t actual_steps = actual_raw >> 8;
+
+  // Prevent loop() from rewriting the old target.
   this->current_position = actual_steps;
   this->target_position = actual_steps;
   this->written_target_ = actual_steps;
 
-  // Tell the TMC5160 to decelerate to its current position.
-  // The hardware ramp generator uses DMAX/D1 for the stop.
-  this->write_reg_(REGISTER_XTARGET, static_cast<uint32_t>(actual_raw));
+  // TMC5160 datasheet: early ramp termination in positioning mode.
+  // Stop using AMAX/A1 rather than correcting toward the old target.
+  this->write_reg_(REGISTER_VSTART, 0);
+  this->write_reg_(REGISTER_VMAX, 0);
 
-  ESP_LOGI(TAG, "Requested controlled stop at position %" PRId32, actual_steps);
+  ESP_LOGI(TAG, "Controlled stop requested at position %" PRId32, actual_steps);
 }
 
 void TMC5160::dump_config() {
