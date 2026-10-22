@@ -102,8 +102,11 @@ void TMC5160::setup() {
   // // IHOLDDELAY=6, IRUN=31, IHOLD=19.
   // this->write_reg_(REGISTER_IHOLD_IRUN, 0x00061F13);
 
-  // IHOLDDELAY=6, IRUN=31, IHOLD=10
-  this->write_reg_(REGISTER_IHOLD_IRUN, 0x00060A1F);
+  // // IHOLDDELAY=6, IRUN=31, IHOLD=10
+  // this->write_reg_(REGISTER_IHOLD_IRUN, 0x00060A1F);
+
+  // IHOLDDELAY=6, IRUN=31, IHOLD=5
+  this->write_reg_(REGISTER_IHOLD_IRUN, 0x0006051F);
 
   // TPOWERDOWN = 10.
   this->write_reg_(0x11, 0x0000000A);
