@@ -44,6 +44,7 @@ class TMC5160 : public Component,
   uint32_t read_reg_(uint8_t address, bool log_raw = false);
   void write_reg_(uint8_t address, uint32_t value);
   void apply_motion_config_();
+  void stop_motion();
 
   /// Last target written to XTARGET, used to detect config changes in loop().
   int32_t written_target_{0};

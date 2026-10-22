@@ -173,6 +173,23 @@ void TMC5160::loop() {
   }
 }
 
+void TMC5160::stop_motion() {
+  // Read the live hardware position (native 1/256-step units).
+  const int32_t actual_raw = static_cast<int32_t>(this->read_reg_(REGISTER_XACTUAL));
+
+  // Synchronize ESPHome's position bookkeeping.
+  const int32_t actual_steps = actual_raw >> 8;
+  this->current_position = actual_steps;
+  this->target_position = actual_steps;
+  this->written_target_ = actual_steps;
+
+  // Tell the TMC5160 to decelerate to its current position.
+  // The hardware ramp generator uses DMAX/D1 for the stop.
+  this->write_reg_(REGISTER_XTARGET, static_cast<uint32_t>(actual_raw));
+
+  ESP_LOGI(TAG, "Requested controlled stop at position %" PRId32, actual_steps);
+}
+
 void TMC5160::dump_config() {
   ESP_LOGCONFIG(TAG, "TMC5160:");
   LOG_STEPPER(this);
