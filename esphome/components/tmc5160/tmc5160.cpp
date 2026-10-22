@@ -130,8 +130,8 @@ void TMC5160::setup() {
   this->write_reg_(REGISTER_V1, 200000);  // 2x
   this->write_reg_(REGISTER_AMAX, 500);
   this->write_reg_(REGISTER_VMAX, 800000);  // 2x
-  this->write_reg_(REGISTER_DMAX, 700);
-  this->write_reg_(REGISTER_D1, 1400);
+  this->write_reg_(REGISTER_DMAX, 1100);
+  this->write_reg_(REGISTER_D1, 2000);
   this->write_reg_(REGISTER_VSTOP, 10);
 
   // Conservative initial ramp profile.
