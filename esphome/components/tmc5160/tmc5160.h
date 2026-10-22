@@ -19,6 +19,8 @@ class TMC5160 : public Component,
   void loop() override;
   void dump_config() override;
   void stop_motion();
+  void set_motor_enabled(bool enabled);
+  bool motor_enabled_{true};
 
   void on_update_speed() override { this->apply_motion_config_(); }
 

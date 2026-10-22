@@ -191,6 +191,36 @@ void TMC5160::stop_motion() {
   ESP_LOGI(TAG, "Controlled stop requested at position %" PRId32, actual_steps);
 }
 
+void TMC5160::set_motor_enabled(bool enabled) {
+  if (enabled == this->motor_enabled_)
+    return;
+
+  if (!enabled) {
+    // Hold ramp generation and disable the chopper output stage.
+    this->write_reg_(REGISTER_RAMPMODE, 3);
+    this->write_reg_(0x6C, 0x000100C0);  // CHOPCONF TOFF=0: outputs off
+    this->motor_enabled_ = false;
+    ESP_LOGI(TAG, "Motor unlocked; driver outputs disabled");
+    return;
+  }
+
+  // Restore the chopper output stage.
+  this->write_reg_(0x6C, 0x000100C3);
+
+  // Resynchronize hardware coordinates so it won't chase an old target.
+  const int32_t pos = this->current_position;
+  const uint32_t raw_pos = static_cast<uint32_t>(pos) * 256U;
+  this->write_reg_(REGISTER_XACTUAL, raw_pos);
+  this->write_reg_(REGISTER_XTARGET, raw_pos);
+  this->written_target_ = pos;
+  this->target_position = pos;
+
+  // Return to position mode.
+  this->write_reg_(REGISTER_RAMPMODE, RAMPMODE_POSITION);
+  this->motor_enabled_ = true;
+  ESP_LOGI(TAG, "Motor locked; driver outputs enabled");
+}
+
 void TMC5160::dump_config() {
   ESP_LOGCONFIG(TAG, "TMC5160:");
   LOG_STEPPER(this);
