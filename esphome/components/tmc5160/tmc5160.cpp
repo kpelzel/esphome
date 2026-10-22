@@ -82,6 +82,10 @@ void TMC5160::setup() {
 
   this->write_reg_(REGISTER_GSTAT, 0x07);  // clear latched error flags
   this->write_reg_(REGISTER_IHOLD_IRUN, IHOLD_IRUN_FULL);
+  delay(10);
+
+  ESP_LOGD(TAG, "IHOLD_IRUN readback: %08" PRIX32, this->read_reg_(REGISTER_IHOLD_IRUN, true));
+
   this->apply_motion_config_();
 
   // Hold the position the chip sees at boot, then enable position mode.

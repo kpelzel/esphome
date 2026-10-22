@@ -37,6 +37,7 @@ class TMC5160 : public Component,
     REGISTER_D1 = 0x2A,
     REGISTER_VSTOP = 0x2B,
     REGISTER_XTARGET = 0x2D,
+    REGISTER_CHOPCONF = 0x6C,
     REGISTER_DRV_STATUS = 0x6F,
   };
 
