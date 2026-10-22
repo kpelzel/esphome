@@ -80,26 +80,56 @@ void TMC5160::apply_motion_config_() {
 }
 
 void TMC5160::setup() {
-  this->spi_setup();  // Initialize the SPI device before any transfers
+  this->spi_setup();
 
-  this->write_reg_(REGISTER_GSTAT, 0x07);  // clear latched error flags
-  this->write_reg_(REGISTER_IHOLD_IRUN, IHOLD_IRUN_FULL);
-  delay(10);
+  ESP_LOGI(TAG, "Initializing TMC5160 using datasheet ramp-generator example");
 
-  ESP_LOGD(TAG, "IHOLD_IRUN readback: %08" PRIX32, this->read_reg_(REGISTER_IHOLD_IRUN, true));
+  // Clear latched status flags.
+  this->write_reg_(REGISTER_GSTAT, 0x00000007);
 
-  this->apply_motion_config_();
+  // Configure SpreadCycle chopper.
+  // CHOPCONF (0x6C): TOFF=3, HSTRT=4, HEND=1, TBL=2.
+  this->write_reg_(0x6C, 0x000100C3);
 
-  // Hold the position the chip sees at boot, then enable position mode.
-  const uint32_t actual = this->read_reg_(REGISTER_XACTUAL);
-  // A living link reads IHOLD_IRUN back exactly as written above (00081F1F).
-  ESP_LOGD(TAG, "SPI probe: IHOLD_IRUN=%08X (want 00081F1F) DRV_STATUS=%08X GCONF=%08X XACTUAL=%08X",
-           this->read_reg_(REGISTER_IHOLD_IRUN, true), this->read_reg_(REGISTER_DRV_STATUS),
-           this->read_reg_(REGISTER_GCONF), actual);
-  this->write_reg_(REGISTER_XTARGET, actual);
-  this->write_reg_(REGISTER_RAMPMODE, RAMPMODE_POSITION);
-  this->current_position = static_cast<int32_t>(actual) >> 8;
-  this->written_target_ = this->current_position;
+  // Current configuration from the datasheet example.
+  // WARNING: IRUN=31 is maximum scale; verify motor current and
+  // the breakout's sense-resistor configuration before using this.
+  this->write_reg_(REGISTER_IHOLD_IRUN, 0x0000061F0A);
+
+  // TPOWERDOWN = 10.
+  this->write_reg_(0x11, 0x0000000A);
+
+  // Enable StealthChop mode (EN_PWM_MODE=1).
+  this->write_reg_(REGISTER_GCONF, 0x00000004);
+
+  // TPWM_THRS = 500.
+  this->write_reg_(0x13, 0x000001F4);
+
+  // Initialize the internal ramp generator.
+  this->write_reg_(REGISTER_A1, 1000);
+  this->write_reg_(REGISTER_V1, 50000);
+  this->write_reg_(REGISTER_AMAX, 500);
+  this->write_reg_(REGISTER_VMAX, 200000);
+  this->write_reg_(REGISTER_DMAX, 700);
+  this->write_reg_(REGISTER_D1, 1400);
+  this->write_reg_(REGISTER_VSTOP, 10);
+
+  // Positioning mode.
+  this->write_reg_(REGISTER_RAMPMODE, 0);
+
+  // Datasheet test: move to -51200 microsteps.
+  // -51200 as a signed 32-bit value is 0xFFFF3800.
+  this->write_reg_(REGISTER_XTARGET, 0xFFFF3800);
+
+  ESP_LOGI(TAG, "Sent XTARGET=-51200; checking ramp-generator registers");
+
+  ESP_LOGI(TAG,
+           "GCONF=%08" PRIX32 " CHOPCONF=%08" PRIX32 " RAMPMODE=%08" PRIX32 " VMAX=%08" PRIX32 " XTARGET=%08" PRIX32,
+           this->read_reg_(REGISTER_GCONF), this->read_reg_(0x6C), this->read_reg_(REGISTER_RAMPMODE),
+           this->read_reg_(REGISTER_VMAX), this->read_reg_(REGISTER_XTARGET));
+
+  // Keep ESPHome's software position bookkeeping separate from this
+  // raw-register test. Restore normal Stepper integration after testing.
 }
 
 void TMC5160::loop() {
