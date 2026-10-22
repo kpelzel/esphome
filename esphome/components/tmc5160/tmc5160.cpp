@@ -112,22 +112,22 @@ void TMC5160::setup() {
   this->write_reg_(0x13, 0x000001F4);
 
   // // Initialize the internal ramp generator.
-  // this->write_reg_(REGISTER_A1, 1000);
-  // this->write_reg_(REGISTER_V1, 50000);
-  // this->write_reg_(REGISTER_AMAX, 500);
-  // this->write_reg_(REGISTER_VMAX, 200000);
-  // this->write_reg_(REGISTER_DMAX, 700);
-  // this->write_reg_(REGISTER_D1, 1400);
-  // this->write_reg_(REGISTER_VSTOP, 10);
+  this->write_reg_(REGISTER_A1, 1000);
+  this->write_reg_(REGISTER_V1, 50000);
+  this->write_reg_(REGISTER_AMAX, 500);
+  this->write_reg_(REGISTER_VMAX, 200000);
+  this->write_reg_(REGISTER_DMAX, 700);
+  this->write_reg_(REGISTER_D1, 1400);
+  this->write_reg_(REGISTER_VSTOP, 10);
 
   // Conservative initial ramp profile.
-  this->write_reg_(REGISTER_A1, 100);
-  this->write_reg_(REGISTER_V1, 5000);
-  this->write_reg_(REGISTER_AMAX, 100);
-  this->write_reg_(REGISTER_VMAX, 10000);
-  this->write_reg_(REGISTER_DMAX, 100);
-  this->write_reg_(REGISTER_D1, 100);
-  this->write_reg_(REGISTER_VSTOP, 10);
+  // this->write_reg_(REGISTER_A1, 100);
+  // this->write_reg_(REGISTER_V1, 5000);
+  // this->write_reg_(REGISTER_AMAX, 100);
+  // this->write_reg_(REGISTER_VMAX, 10000);
+  // this->write_reg_(REGISTER_DMAX, 100);
+  // this->write_reg_(REGISTER_D1, 100);
+  // this->write_reg_(REGISTER_VSTOP, 10);
 
   // Positioning mode.
   this->write_reg_(REGISTER_RAMPMODE, 0);
