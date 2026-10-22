@@ -41,14 +41,17 @@ void TMC5160::write_reg_(uint8_t address, uint32_t value) {
 }
 
 uint32_t TMC5160::read_reg_(uint8_t address, bool log_raw) {
-  std::array<uint8_t, 5> request{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
+  const uint8_t reg = address & 0x7F;
 
-  std::array<uint8_t, 5> response{};
+  std::array<uint8_t, 5> request{reg, 0, 0, 0, 0};
+  std::array<uint8_t, 5> response{reg, 0, 0, 0, 0};
 
+  // First transaction requests the register.
   this->enable();
   this->transfer_array(request.data(), request.size());
   this->disable();
 
+  // Second transaction repeats the address and receives the requested data.
   this->enable();
   this->transfer_array(response.data(), response.size());
   this->disable();
