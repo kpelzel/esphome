@@ -36,12 +36,21 @@ void TMC5160::write_reg_(uint8_t address, uint32_t value) {
 }
 
 uint32_t TMC5160::read_reg_(uint8_t address) {
-  // Read datagram: address byte with bit 7 clear. The first received byte is
-  // invalid (the chip outputs the address back), the answer is in bytes 1-4.
-  std::array<uint8_t, 5> data{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
-  this->transfer_array(data.data(), data.size());
-  return (static_cast<uint32_t>(data[1]) << 24) | (static_cast<uint32_t>(data[2]) << 16) |
-         (static_cast<uint32_t>(data[3]) << 8) | data[4];
+  std::array<uint8_t, 5> request{
+      static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0
+  };
+  this->transfer_array(request.data(), request.size());
+
+  // The next datagram clocks out the result of the previous read.
+  std::array<uint8_t, 5> response{
+      static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0
+  };
+  this->transfer_array(response.data(), response.size());
+
+  return (static_cast<uint32_t>(response[1]) << 24) |
+         (static_cast<uint32_t>(response[2]) << 16) |
+         (static_cast<uint32_t>(response[3]) << 8) |
+         response[4];
 }
 
 void TMC5160::apply_motion_config_() {
