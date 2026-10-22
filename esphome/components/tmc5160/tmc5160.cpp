@@ -127,9 +127,9 @@ void TMC5160::setup() {
   // this->write_reg_(REGISTER_VSTOP, 10);
 
   // Initialize the internal ramp generator.
-  this->write_reg_(REGISTER_A1, 5000);
+  this->write_reg_(REGISTER_A1, 10000);
   this->write_reg_(REGISTER_V1, 200000);  // 2x
-  this->write_reg_(REGISTER_AMAX, 2500);
+  this->write_reg_(REGISTER_AMAX, 7000);
   this->write_reg_(REGISTER_VMAX, 800000);  // 2x
   this->write_reg_(REGISTER_DMAX, 2500);
   this->write_reg_(REGISTER_D1, 5000);
