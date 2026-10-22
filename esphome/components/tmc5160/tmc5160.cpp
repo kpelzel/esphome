@@ -41,17 +41,14 @@ void TMC5160::write_reg_(uint8_t address, uint32_t value) {
 }
 
 uint32_t TMC5160::read_reg_(uint8_t address, bool log_raw) {
-  const uint8_t reg = address & 0x7F;
+  std::array<uint8_t, 5> request{static_cast<uint8_t>(address & 0x7F), 0, 0, 0, 0};
 
-  std::array<uint8_t, 5> request{reg, 0, 0, 0, 0};
-  std::array<uint8_t, 5> response{reg, 0, 0, 0, 0};
+  std::array<uint8_t, 5> response{};
 
-  // First transaction requests the register.
   this->enable();
   this->transfer_array(request.data(), request.size());
   this->disable();
 
-  // Second transaction repeats the address and receives the requested data.
   this->enable();
   this->transfer_array(response.data(), response.size());
   this->disable();
@@ -83,13 +80,26 @@ void TMC5160::apply_motion_config_() {
 }
 
 void TMC5160::setup() {
-  this->spi_setup();
+  this->spi_setup();  // Initialize the SPI device before any transfers
 
+  this->write_reg_(REGISTER_GSTAT, 0x07);  // clear latched error flags
   this->write_reg_(REGISTER_IHOLD_IRUN, IHOLD_IRUN_FULL);
   delay(10);
 
-  const uint32_t value = this->read_reg_(REGISTER_IHOLD_IRUN, true);
-  ESP_LOGD(TAG, "IHOLD_IRUN readback: %08" PRIX32, value);
+  ESP_LOGD(TAG, "IHOLD_IRUN readback: %08" PRIX32, this->read_reg_(REGISTER_IHOLD_IRUN, true));
+
+  this->apply_motion_config_();
+
+  // Hold the position the chip sees at boot, then enable position mode.
+  const uint32_t actual = this->read_reg_(REGISTER_XACTUAL);
+  // A living link reads IHOLD_IRUN back exactly as written above (00081F1F).
+  ESP_LOGD(TAG, "SPI probe: IHOLD_IRUN=%08X (want 00081F1F) DRV_STATUS=%08X GCONF=%08X XACTUAL=%08X",
+           this->read_reg_(REGISTER_IHOLD_IRUN, true), this->read_reg_(REGISTER_DRV_STATUS),
+           this->read_reg_(REGISTER_GCONF), actual);
+  this->write_reg_(REGISTER_XTARGET, actual);
+  this->write_reg_(REGISTER_RAMPMODE, RAMPMODE_POSITION);
+  this->current_position = static_cast<int32_t>(actual) >> 8;
+  this->written_target_ = this->current_position;
 }
 
 void TMC5160::loop() {
