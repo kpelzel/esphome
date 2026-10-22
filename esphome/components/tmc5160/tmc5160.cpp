@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cinttypes>
 
 namespace esphome::tmc5160 {
 
@@ -67,6 +68,8 @@ void TMC5160::setup() {
 
   // Hold the position the chip sees at boot, then enable position mode.
   const uint32_t actual = this->read_reg_(REGISTER_XACTUAL);
+  ESP_LOGD(TAG, "SPI probe: GSTAT=%08X GCONF=%08X XACTUAL=%08X", this->read_reg_(REGISTER_GSTAT),
+           this->read_reg_(REGISTER_GCONF), actual);
   this->write_reg_(REGISTER_XTARGET, actual);
   this->write_reg_(REGISTER_RAMPMODE, RAMPMODE_POSITION);
   this->current_position = static_cast<int32_t>(actual) >> 8;
@@ -76,6 +79,7 @@ void TMC5160::setup() {
 void TMC5160::loop() {
   if (this->target_position != this->written_target_) {
     this->written_target_ = this->target_position;
+    ESP_LOGD(TAG, "Target changed to %" PRId32 ", writing XTARGET", this->written_target_);
     this->write_reg_(REGISTER_XTARGET, static_cast<uint32_t>(static_cast<int32_t>(this->written_target_)) * 256);
   }
   const int32_t actual = static_cast<int32_t>(this->read_reg_(REGISTER_XACTUAL)) >> 8;

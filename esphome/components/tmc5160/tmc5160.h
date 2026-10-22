@@ -23,6 +23,7 @@ class TMC5160 : public Component,
 
  protected:
   enum Register : uint8_t {
+    REGISTER_GCONF = 0x00,
     REGISTER_GSTAT = 0x01,
     REGISTER_IHOLD_IRUN = 0x10,
     REGISTER_RAMPMODE = 0x20,
