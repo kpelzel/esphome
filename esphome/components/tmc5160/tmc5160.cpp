@@ -140,9 +140,9 @@ void TMC5160::setup() {
 
   // Datasheet test: move to -51200 microsteps.
   // -51200 as a signed 32-bit value is 0xFFFF3800.
-  this->write_reg_(REGISTER_XTARGET, 0xFFFF3800);
+  // this->write_reg_(REGISTER_XTARGET, 0xFFFF3800);
 
-  ESP_LOGI(TAG, "Sent XTARGET=-51200; checking ramp-generator registers");
+  // ESP_LOGI(TAG, "Sent XTARGET=-51200; checking ramp-generator registers");
 
   ESP_LOGI(TAG,
            "GCONF=%08" PRIX32 " CHOPCONF=%08" PRIX32 " RAMPMODE=%08" PRIX32 " VMAX=%08" PRIX32 " XTARGET=%08" PRIX32,
